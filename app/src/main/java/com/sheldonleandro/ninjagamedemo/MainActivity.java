@@ -1,7 +1,6 @@
-package com.sheldonleandro.thisisagame;
+package com.sheldonleandro.ninjagamedemo;
 import android.util.DisplayMetrics;
 import org.andengine.engine.handler.IUpdateHandler;
-import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.MoveXModifier;
@@ -27,8 +26,6 @@ public class MainActivity extends SimpleBaseGameActivity implements IOnSceneTouc
     private Camera camera;
 
     private Scene mainScene;
-
-    private BitmapTextureAtlas ninjaActorBitmapTextureAtlas;
 
     private TextureRegion ninjaActorTextureRegion;
 
@@ -64,19 +61,19 @@ public class MainActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
-        ninjaActorBitmapTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(),512,
+        BitmapTextureAtlas ninjaActorBitmapTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 512,
                 512);
 
         ninjaActorTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-                this.ninjaActorBitmapTextureAtlas,this,"player.png",10,
+                ninjaActorBitmapTextureAtlas,this,"player.png",10,
                 0);
 
         targetTextureRegion = BitmapTextureAtlasTextureRegionFactory
-                .createFromAsset(this.ninjaActorBitmapTextureAtlas, this, "target.png",
+                .createFromAsset(ninjaActorBitmapTextureAtlas, this, "target.png",
                         128, 0);
 
         projectileTextureRegion = BitmapTextureAtlasTextureRegionFactory
-                .createFromAsset(this.ninjaActorBitmapTextureAtlas, this,
+                .createFromAsset(ninjaActorBitmapTextureAtlas, this,
                         "projectile.png", 64, 0);
 
         mEngine.getTextureManager().loadTexture(ninjaActorBitmapTextureAtlas);
@@ -102,10 +99,10 @@ public class MainActivity extends SimpleBaseGameActivity implements IOnSceneTouc
         mainScene.attachChild(ninjaActor);
 
         targetLinkedList = new LinkedList<>();
-        targetsToBeAdded = new LinkedList<Sprite>();
+        targetsToBeAdded = new LinkedList<>();
 
-        projectileLinkedList = new LinkedList<Sprite>();
-        projectilesToBeAdded = new LinkedList<Sprite>();
+        projectileLinkedList = new LinkedList<>();
+        projectilesToBeAdded = new LinkedList<>();
 
         createSpriteSpawnTimeHandler();
 
@@ -120,7 +117,7 @@ public class MainActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 
                 Iterator<Sprite> targets = targetLinkedList.iterator();
 
-                Sprite _target = null;
+                Sprite _target;
 
                 while (targets.hasNext()) {
 
@@ -142,7 +139,6 @@ public class MainActivity extends SimpleBaseGameActivity implements IOnSceneTouc
                                 + _projectile.getHeight()
                                 || _projectile.getY() <= _projectile.getHeight()) {
                             removeSprite(_projectile, projectiles);
-                            continue;
                         }
                     }
 
@@ -194,25 +190,14 @@ public class MainActivity extends SimpleBaseGameActivity implements IOnSceneTouc
         float mEffectSpawnDelay = 1f;
 
         TimerHandler spriteTimerHandler = new TimerHandler(mEffectSpawnDelay, true,
-                new ITimerCallback() {
-
-            @Override
-            public void onTimePassed(TimerHandler pTimerHandler) {
-                addTarget();
-            }
-        });
+                pTimerHandler -> addTarget());
 
         getEngine().registerUpdateHandler(spriteTimerHandler);
     }
 
     public void removeSprite(final Sprite _sprite, Iterator<Sprite> it) {
 
-        runOnUpdateThread(new Runnable() {
-            @Override
-            public void run() {
-                mainScene.detachChild(_sprite);
-            }
-        });
+        runOnUpdateThread(() -> mainScene.detachChild(_sprite));
 
         it.remove();
     }
