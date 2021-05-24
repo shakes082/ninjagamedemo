@@ -36,15 +36,15 @@ public class MainActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 
     private TextureRegion targetTextureRegion;
 
-    private LinkedList targetLinkedList;
+    private LinkedList<Sprite> targetLinkedList;
 
-    private LinkedList targetsToBeAdded;
+    private LinkedList<Sprite> targetsToBeAdded;
 
     private TextureRegion projectileTextureRegion;
 
-    private LinkedList projectileLinkedList;
+    private LinkedList<Sprite> projectileLinkedList;
 
-    private LinkedList projectilesToBeAdded;
+    private LinkedList<Sprite> projectilesToBeAdded;
 
     @Override
     public EngineOptions onCreateEngineOptions(){
@@ -52,8 +52,7 @@ public class MainActivity extends SimpleBaseGameActivity implements IOnSceneTouc
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        camera = new Camera(0, 0, displayMetrics.widthPixels,
-                displayMetrics.heightPixels);
+        camera = new Camera(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
 
         return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED,
                 new RatioResolutionPolicy(displayMetrics.widthPixels, displayMetrics.heightPixels),
@@ -69,7 +68,7 @@ public class MainActivity extends SimpleBaseGameActivity implements IOnSceneTouc
                 512);
 
         ninjaActorTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-                this.ninjaActorBitmapTextureAtlas,this,"player.png",0,
+                this.ninjaActorBitmapTextureAtlas,this,"player.png",10,
                 0);
 
         targetTextureRegion = BitmapTextureAtlasTextureRegionFactory
@@ -98,14 +97,15 @@ public class MainActivity extends SimpleBaseGameActivity implements IOnSceneTouc
 
         ninjaActor = new Sprite(playerX, playerY, this.ninjaActorTextureRegion,
                 getVertexBufferObjectManager());
+        ninjaActor.setScale(3);
 
         mainScene.attachChild(ninjaActor);
 
-        targetLinkedList = new LinkedList();
-        targetsToBeAdded = new LinkedList();
+        targetLinkedList = new LinkedList<>();
+        targetsToBeAdded = new LinkedList<Sprite>();
 
-        projectileLinkedList = new LinkedList();
-        projectilesToBeAdded = new LinkedList();
+        projectileLinkedList = new LinkedList<Sprite>();
+        projectilesToBeAdded = new LinkedList<Sprite>();
 
         createSpriteSpawnTimeHandler();
 
@@ -205,7 +205,7 @@ public class MainActivity extends SimpleBaseGameActivity implements IOnSceneTouc
         getEngine().registerUpdateHandler(spriteTimerHandler);
     }
 
-    public void removeSprite(final Sprite _sprite, Iterator it) {
+    public void removeSprite(final Sprite _sprite, Iterator<Sprite> it) {
 
         runOnUpdateThread(new Runnable() {
             @Override

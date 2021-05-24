@@ -1,0 +1,21 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    xmlns:tools="http://schemas.android.com/tools"
+4    package="org.andengine"
+5    android:versionCode="1"
+6    android:versionName="1.0" >
+7
+8    <uses-sdk
+9        android:minSdkVersion="16"
+9-->/home/sheldona/AndroidStudioProjects/NinjaGameDemo/andEngine/src/main/AndroidManifest.xml
+10        android:targetSdkVersion="29" />
+10-->/home/sheldona/AndroidStudioProjects/NinjaGameDemo/andEngine/src/main/AndroidManifest.xml
+11
+12    <application
+12-->/home/sheldona/AndroidStudioProjects/NinjaGameDemo/andEngine/src/main/AndroidManifest.xml:8:2-9:39
+13        android:debuggable="true"
+13-->/home/sheldona/AndroidStudioProjects/NinjaGameDemo/andEngine/src/main/AndroidManifest.xml:8:15-40
+14        tools:ignore="HardcodedDebugMode" />
+14-->/home/sheldona/AndroidStudioProjects/NinjaGameDemo/andEngine/src/main/AndroidManifest.xml:9:3-36
+15
+16</manifest>
